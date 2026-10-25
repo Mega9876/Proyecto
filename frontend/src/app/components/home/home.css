@@ -1,0 +1,43 @@
+:host { display: block; }
+.hero { display: grid; grid-template-columns: 46% 54%; min-height: calc(100svh - 128px); }
+.intro { background: #efeee6; padding: clamp(65px, 7.8vh, 110px) 9% 45px 11.1%; display: flex; flex-direction: column; align-items: flex-start; }
+.eyebrow { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 750; letter-spacing: 2px; text-transform: uppercase; color: #616c5e; margin: 0 0 34px; }
+.eyebrow > span { width: 33px; height: 1px; background: #62704e; }
+h1 { font-family: Arial, Helvetica, sans-serif; font-size: clamp(80px, 7.7vw, 155px); font-weight: 1000; letter-spacing: -.095em; line-height: .81; margin: 0 0 32px; }
+h1 > span { display: block; }
+.green { color: #8ba51a; }
+.dot { color: #a0bc2b; }
+.description { color: #727b71; font-size: 15px; line-height: 1.9; margin: 0; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; margin-top: 42px; }
+.primary-link { background: #141911; color: white; text-transform: uppercase; padding: 21px 28px; border-radius: 2px; display: flex; gap: 30px; align-items: center; text-decoration: none; font-size: 12px; font-weight: 850; }
+.primary-link span { font-size: 21px; font-weight: 400; line-height: 1; }
+.secondary-link { text-decoration: none; border-bottom: 1px solid #c8ccbd; padding-block: 12px; font-size: 12px; font-weight: 700; }
+.secondary-link span { margin-left: 12px; font-size: 19px; }
+.attitude { display: flex; align-items: center; gap: 22px; margin-top: auto; padding-top: 60px; }
+.community { display: flex; padding-right: 2px; }
+.community span { display: grid; place-items: center; width: 33px; height: 33px; border-radius: 50%; background: #b0d13a; font-size: 10px; font-weight: 700; border: 1px solid #efeee6; }
+.community span + span { margin-left: -7px; background: #d0d7bb; }
+.community span:last-child { background: #dddfd3; font-size: 15px; }
+.attitude strong { font-size: 13px; }
+.attitude p { margin: 5px 0 0; font-size: 11px; color: #87907e; }
+.showcase { position: relative; isolation: isolate; overflow: hidden; min-height: 700px; background: #c7de80; }
+.orbit, .disc { position: absolute; border-radius: 50%; z-index: -1; }
+.orbit { border: 1px solid #e1ecb2; width: 112%; aspect-ratio: 1; left: -6%; top: -15%; }
+.orbit-inner { width: 89%; left: 5%; top: 2%; }
+.disc { width: 76%; aspect-ratio: 1; left: 15%; top: 12%; background: #d6e89d; }
+.background-word { position: absolute; z-index: -1; top: 34%; left: -6%; font-size: clamp(150px, 18vw, 360px); letter-spacing: -.09em; font-weight: 950; color: #e4efb6; transform: rotate(-9deg); }
+.edition { position: absolute; right: 28px; top: 42px; writing-mode: vertical-rl; text-transform: uppercase; letter-spacing: 3px; font-size: 10px; font-weight: 700; color: #4c602d; }
+.sneaker { position: absolute; width: 94%; height: auto; left: 3%; top: 46%; transform: translateY(-50%) rotate(-14deg); filter: drop-shadow(14px 30px 18px #3b472259); }
+.product-caption { position: absolute; left: 8%; bottom: 6%; }
+.product-caption p { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin: 0 0 9px; }
+.product-caption h2 { font-size: 23px; letter-spacing: -1px; line-height: 1.2; margin: 0 0 8px; font-weight: 800; }
+.product-caption > span { font-size: 12px; }
+.slide-number { position: absolute; right: 6%; bottom: 6%; font-size: 12px; font-weight: 800; }
+a { transition: color .18s, background .18s; }
+.primary-link:hover { background: #384722; }
+.secondary-link:hover, .navigation a:hover { color: #87a31c; }
+:is(a, button):focus-visible { outline: 3px solid #87a31c; outline-offset: 5px; }
+@media (min-width: 1700px) { .intro { padding-top: 100px; padding-bottom: 55px; } .hero-actions { margin-top: 48px; } .description { font-size: 16px; } }
+@media (max-width: 1100px) { .intro { padding-left: 9%; padding-right: 6%; } h1 { font-size: 8vw; } .hero-actions { gap: 12px; } .primary-link { padding: 19px; gap: 18px; } .desktop-break { display: none; } .showcase { min-height: 680px; } }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .intro { padding: 48px 7% 35px; } .eyebrow { font-size: 9px; margin-bottom: 30px; letter-spacing: 1.5px; } h1 { font-size: clamp(86px, 19vw, 140px); margin-bottom: 27px; } .description { font-size: 14px; max-width: 370px; } .hero-actions { margin-top: 27px; gap: 20px; } .primary-link { font-size: 11px; } .attitude { padding-top: 38px; } .showcase { min-height: 520px; } .sneaker { top: 44%; } .background-word { font-size: 35vw; } .edition { right: 18px; top: 28px; } .product-caption h2 { font-size: 22px; } }
+@media (prefers-reduced-motion: reduce) { a { transition: none; } }

@@ -1,0 +1,42 @@
+<dialog #cartDialog class="cart-dialog" aria-labelledby="cart-title" (cancel)="$event.preventDefault(); close()" (click)="$event.target === cartDialog ? close() : null">
+  <div class="cart-heading"><div><p class="cart-eyebrow">Tus próximos pasos</p><h2 id="cart-title">Mi carrito<span>.</span></h2></div><button type="button" class="close-cart" aria-label="Cerrar carrito" [disabled]="saving()" (click)="close()">×</button></div>
+  @if (cart.items().length) {
+    <p class="cart-count">{{ cart.count() }} {{ cart.count() === 1 ? 'artículo' : 'artículos' }} en tu bolsa</p>
+    <div class="cart-items">
+      @for (item of cart.items(); track item.inventarioId) {
+        <article class="cart-item">
+          <img [src]="item.imagenUrl || 'urban-sneaker.svg'" [alt]="item.nombre" (error)="$any($event.target).src = 'urban-sneaker.svg'">
+          <div class="item-info"><p>{{ item.marca }}</p><h3>{{ item.nombre }}</h3><p>Talla {{ item.talla }} · Bs {{ item.precio.toFixed(2) }}</p>
+            @if (!item.stock) { <p class="stock-warning">Ya no está disponible</p> }
+            @else if (item.cantidad > item.stock) { <p class="stock-warning">Solo quedan {{ item.stock }} unidades</p> }
+            <div class="item-controls">
+              <button type="button" [attr.aria-label]="'Quitar una unidad de ' + item.nombre + ', talla ' + item.talla" [disabled]="saving() || item.cantidad <= 1 || !item.stock" (click)="cart.quantity(item.inventarioId, Math.min(item.cantidad - 1, item.stock))">−</button>
+              <span class="item-quantity">{{ item.cantidad }}</span>
+              <button type="button" [attr.aria-label]="'Añadir una unidad de ' + item.nombre + ', talla ' + item.talla" [disabled]="saving() || item.cantidad >= item.stock" (click)="cart.quantity(item.inventarioId, item.cantidad + 1)">+</button>
+              <button type="button" class="remove-item" [disabled]="saving()" (click)="cart.remove(item.inventarioId)">Eliminar</button>
+            </div>
+          </div>
+          <strong class="item-subtotal">Bs {{ (item.precio * item.cantidad).toFixed(2) }}</strong>
+        </article>
+      }
+    </div>
+    <div class="cart-total"><span>Total</span><strong>Bs {{ cart.total().toFixed(2) }}</strong></div>
+    @if (error()) { <p class="cart-error" role="alert">{{ error() }}</p> }
+    @if (checkingOut()) {
+      <form #orderForm="ngForm" (ngSubmit)="orderForm.valid && placeOrder()" class="cart-checkout">
+        <h3>Datos para tu pedido</h3>
+        <label class="form-field">Nombre completo<input name="nombre" [(ngModel)]="customer.nombre" minlength="2" maxlength="120" [disabled]="saving()" required></label>
+        <label class="form-field">Correo<input name="email" type="email" email [(ngModel)]="customer.email" maxlength="150" [disabled]="saving()" required></label>
+        <label class="form-field">Teléfono<input name="telefono" type="tel" [(ngModel)]="customer.telefono" maxlength="30" [disabled]="saving()"></label>
+        <label class="form-field">Dirección<input name="direccion" [(ngModel)]="customer.direccion" maxlength="250" [disabled]="saving()"></label>
+        <button class="cart-primary" type="submit" [disabled]="saving() || orderForm.invalid">{{ saving() ? 'Confirmando…' : 'Confirmar compra · Bs ' + cart.total().toFixed(2) }}</button>
+        <button class="cart-secondary" type="button" [disabled]="saving()" (click)="checkingOut.set(false)">Volver al carrito</button>
+      </form>
+    } @else {
+      <button class="cart-primary checkout-button" type="button" [disabled]="saving()" (click)="checkout()">{{ saving() ? 'Comprobando stock…' : 'Finalizar compra ↗' }}</button>
+      <button class="cart-secondary" type="button" [disabled]="saving()" (click)="close()">Seguir comprando</button>
+    }
+  } @else {
+    <div class="cart-empty"><span aria-hidden="true">✳</span><h3>Tu carrito está vacío</h3><p>Añade tus modelos y tallas favoritos antes de finalizar la compra.</p><button type="button" class="cart-primary" (click)="close()">Seguir explorando</button></div>
+  }
+</dialog>

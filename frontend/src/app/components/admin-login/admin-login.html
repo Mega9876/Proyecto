@@ -1,0 +1,15 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <a class="login-brand" routerLink="/" aria-label="SneakZone, volver a la tienda">SNEAK<span>ZONE</span></a>
+    <p class="login-eyebrow">Área privada · Administración</p>
+    <h1 id="login-title">Bienvenido de nuevo<span>.</span></h1>
+    <p class="login-description">Inicia sesión con tu cuenta de administrador para gestionar la tienda.</p>
+    <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && login()">
+      <label class="form-field" for="admin-email">Correo electrónico<input id="admin-email" name="email" type="email" email [(ngModel)]="email" autocomplete="username" maxlength="256" [disabled]="saving()" required></label>
+      <label class="form-field" for="admin-password">Contraseña<input id="admin-password" name="password" type="password" [(ngModel)]="password" autocomplete="current-password" maxlength="256" [disabled]="saving()" required></label>
+      @if (error()) { <p class="login-error" role="alert">{{ error() }}</p> }
+      <button class="login-submit" type="submit" [disabled]="saving() || loginForm.invalid">{{ saving() ? 'Iniciando sesión…' : 'Entrar al panel ↗' }}</button>
+    </form>
+    <a class="back-store" routerLink="/">← Volver a la tienda</a>
+  </section>
+</main>

@@ -1,0 +1,47 @@
+:host { display: block; }
+.eyebrow { text-transform: uppercase; font-size: 11px; letter-spacing: 2px; font-weight: 700; color: #86a326; margin: 0 0 22px; }
+.page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; margin-bottom: 42px; }
+h1 { font-size: clamp(42px, 3.6vw, 70px); line-height: 1.05; letter-spacing: -.075em; font-weight: 1000; margin: 0; }
+h1 > span { color: #a3be3f; }
+.description { color: #899783; font-size: 14px; line-height: 1.7; margin: 16px 0 0; }
+.primary-action { border: 1px solid #141911; background: #141911; color: white; font: inherit; font-size: 12px; font-weight: 850; text-transform: uppercase; border-radius: 2px; padding: 21px 28px; white-space: nowrap; }
+.primary-action.outline { color: #141911; background: transparent; border-color: #d7ded0; }
+.notice { display: flex; align-items: center; gap: 12px; border: 1px solid #dce5c8; background: #eef3e5; padding: 20px; color: #6d8055; font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+.notice > span { font-size: 23px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.stat { background: white; border: 1px solid #e6ebe2; padding: 28px 32px; }
+.stat h2 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #879b77; margin: 0 0 20px; }
+.stat strong { font-size: 40px; font-weight: 700; line-height: 1.2; }
+.stat .low-stock { color: #ba4f44; }
+.table-card { border: 1px solid #e6ebe2; background: white; }
+.table-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 24px 26px; gap: 22px; min-height: 88px; }
+.table-toolbar h2 { display: flex; gap: 10px; align-items: center; margin: 0; text-transform: uppercase; font-size: 14px; font-weight: 850; }
+.count { background: #ebf4d6; border-radius: 3px; color: #67892b; font-size: 12px; padding: 5px 9px; }
+input, select { background: #f7f8f4; border: 1px solid #dfe5d8; border-radius: 2px; padding: 13px 15px; font: inherit; font-size: 12px; color: #141911; min-width: 0; }
+input::placeholder { color: #9ca994; }
+.table-toolbar > input, .table-toolbar > select { width: 280px; max-width: 100%; }
+.client-search { display: flex; gap: 8px; }
+.client-search input { width: 180px; }
+.client-search button { background: #20291c; color: white; border: 0; font-size: 11px; font-weight: 700; padding: 10px 15px; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { background: #f9fbf7; padding: 19px 26px; font-size: 10px; color: #8a9d7d; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; border-block: 1px solid #e6ebe2; }
+.table-empty { text-align: center; padding: 42px 20px; color: #8d9c86; font-size: 14px; }
+.footnote { font-size: 12px; color: #8d9c86; line-height: 1.8; margin-top: 22px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+button { cursor: pointer; }
+.primary-action:hover { background: #34452a; color: white; }
+:is(a, button, input, select):focus-visible { outline: 3px solid #a1ba35; outline-offset: 3px; }
+dialog { border: 1px solid #e0e7d5; border-radius: 5px; width: min(500px, 90vw); max-height: 85svh; padding: 28px; margin: auto; background: #f7f9f3; color: #141911; }
+dialog::backdrop { background: #10180eb3; }
+.dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.dialog-heading h2 { font-size: 26px; font-weight: 850; letter-spacing: -1px; margin: 0; }
+.dialog-heading button { border: 0; background: none; font-size: 28px; }
+.dialog-note { font-size: 12px; color: #7c8c70; line-height: 1.8; margin-block: 18px 22px; }
+.form-field { display: grid; gap: 8px; font-size: 12px; font-weight: 700; margin-block: 15px; }
+.form-field input { background: white; width: 100%; }
+.dialog-actions { display: flex; justify-content: flex-end; margin-top: 25px; }
+.form-error { padding: 12px; margin-top: 16px; background: #fae9e2; color: #943c2c; font-size: 13px; line-height: 1.6; }
+form :is(input, select).ng-invalid.ng-touched { border-color: #b94e3c; }
+@media (max-width: 1100px) { .page-heading { flex-wrap: wrap; } .stat { padding: 22px; } .table-toolbar { flex-wrap: wrap; } th { padding-inline: 18px; } }
+@media (max-width: 760px) { .eyebrow { font-size: 9px; } .page-heading { margin-bottom: 28px; gap: 20px; } h1 { font-size: 44px; } .description { font-size: 13px; } .primary-action { padding: 16px 20px; font-size: 11px; } .notice { font-size: 12px; padding: 16px; } .stats { grid-template-columns: 1fr; gap: 12px; } .stat { display: flex; align-items: center; justify-content: space-between; gap: 15px; } .stat h2 { margin: 0; } .stat strong { font-size: 30px; } .table-toolbar { padding: 20px; } .table-toolbar h2 { font-size: 12px; } .client-search { width: 100%; } .client-search input { flex: 1; width: auto; } table { min-width: 600px; } }

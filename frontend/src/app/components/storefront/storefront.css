@@ -1,0 +1,44 @@
+:host { display: block; min-height: 100svh; }
+.announcement { min-height: 39px; background: #141911; color: #fff; display: flex; justify-content: center; align-items: center; gap: 22px; text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: 750; padding: 8px 20px; text-align: center; }
+.announcement span { color: #d8fb63; }
+.spark { font-size: 20px; }
+.header { height: 100px; padding-inline: 5.1%; display: flex; align-items: center; justify-content: space-between; background: #fff; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 12px; font-size: 26px; font-weight: 950; letter-spacing: -1.5px; text-decoration: none; width: fit-content; }
+.brand-accent { color: #88aa1c; }
+.brand-icon { position: relative; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: #141911; color: #d4fc68; font-size: 32px; transform: rotate(-9deg); }
+.brand-icon span { position: absolute; top: -9px; right: -7px; font-size: 19px; color: #8bb725; }
+.navigation { display: flex; align-self: stretch; align-items: center; gap: 52px; margin-left: 8%; font-size: 14px; font-weight: 700; color: #757b70; }
+.navigation a { position: relative; display: grid; align-items: center; height: 100%; text-decoration: none; }
+.navigation .active { color: #141911; }
+.active::after { content: ''; position: absolute; bottom: 0; height: 4px; width: 100%; background: #141911; }
+.header-actions { display: flex; gap: 16px; }
+.icon-button { position: relative; width: 50px; height: 50px; border: 1px solid #e9eae4; border-radius: 50%; background: white; display: grid; place-items: center; }
+.icon-button svg { width: 24px; stroke: currentColor; stroke-width: 1.8; }
+.bag-count { position: absolute; right: -7px; top: -8px; border: 1px solid #141911; background: #d9fa7a; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: grid; place-items: center; }
+.footer { background: #141b13; color: #a4ad9c; padding: 80px 6% 90px; display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 50px; font-size: 14px; line-height: 1.8; }
+.footer .brand { color: white; }
+.footer .brand-icon { background: #d8f15e; color: #141911; }
+.footer h2 { text-transform: uppercase; color: #d8fb63; font-size: 11px; letter-spacing: 1.7px; margin: 0 0 22px; font-weight: 700; }
+.footer p { margin: 10px 0 18px; }
+.footer small { color: #73816b; font-size: 11px; }
+.footer-links { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-links a { text-decoration: none; }
+.footer-cart { border: 0; background: none; padding: 0; cursor: pointer; color: inherit; line-height: inherit; }
+.cart-toggle { cursor: pointer; }
+.bag-count { min-width: 22px; width: auto; padding-inline: 5px; }
+.purchase-confirmation { margin: 16px 6%; }
+a:hover { color: #88aa1c; }
+:is(a, button):focus-visible { outline: 3px solid #87a31c; outline-offset: 5px; }
+@media (max-width: 1100px) { .navigation { gap: 25px; margin-left: 0; } }
+@media (max-width: 760px) {
+  .announcement { font-size: 8px; letter-spacing: 1px; gap: 10px; }
+  .header { height: 118px; padding: 10px 6% 0; flex-wrap: wrap; gap: 0; }
+  .brand { font-size: 21px; gap: 9px; }
+  .brand-icon { width: 35px; height: 35px; font-size: 27px; }
+  .header-actions { gap: 10px; }
+  .icon-button { width: 39px; height: 39px; }
+  .navigation { order: 3; width: 100%; justify-content: center; gap: 34px; min-height: 44px; font-size: 12px; }
+  .footer { padding: 50px 7%; grid-template-columns: 1fr 1fr; gap: 35px; font-size: 13px; }
+  .footer > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 420px) { .footer { grid-template-columns: 1fr; } }

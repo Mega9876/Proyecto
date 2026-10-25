@@ -1,0 +1,102 @@
+<section aria-labelledby="admin-title">
+  <p class="eyebrow">{{ page().eyebrow }}</p>
+  <div class="page-heading">
+    <div><h1 id="admin-title">{{ page().title }}<span>.</span></h1><p class="description">{{ page().description }}</p></div>
+    <button type="button" class="primary-action" [disabled]="loading() || saving()" [class.outline]="section() === 'pedidos'" (click)="action()">{{ page().action }}</button>
+  </div>
+  @if (loading()) { <div class="notice" role="status">Cargando datos…</div> }
+  @if (error()) { <div class="notice" role="alert">{{ error() }} <button type="button" (click)="load()">Reintentar</button></div> }
+  @if (message()) { <div class="notice" role="status">{{ message() }}</div> }
+
+  @if (section() === 'resumen') {
+    @if (summary(); as s) {
+      <div class="stats summary-stats">
+        <div class="stat"><h2>Productos activos</h2><strong>{{ s.totalZapatillasActivas }}</strong></div>
+        <div class="stat"><h2>Clientes</h2><strong>{{ s.totalClientes }}</strong></div>
+        <div class="stat"><h2>Pedidos confirmados</h2><strong>{{ s.pedidosConfirmados }}</strong></div>
+        <div class="stat"><h2>Ingresos confirmados</h2><strong>Bs {{ s.ingresosConfirmados.toFixed(2) }}</strong></div>
+        <div class="stat"><h2>Pedidos cancelados</h2><strong>{{ s.pedidosCancelados }}</strong></div>
+        <div class="stat"><h2>Variantes con stock bajo</h2><strong>{{ s.variantesConStockBajo }}</strong></div>
+      </div>
+      <h2>Más vendidos</h2>
+      @for (item of s.masVendidas; track item.zapatillaId) { <p>{{ item.nombre }} — {{ item.unidadesVendidas }} unidades</p> }
+      @empty { <p>Todavía no hay ventas registradas.</p> }
+    }
+  }
+  @if (section() === 'inventario') {
+    <div class="stats">
+      @for (stat of stats; track stat; let index = $index; let last = $last) {
+        <div class="stat"><h2>{{ stat }}</h2><strong [class.low-stock]="last">{{ inventoryStats()[index] }}</strong></div>
+      }
+    </div>
+  }
+
+  @if (page().table) {
+    <div class="table-card">
+      <div class="table-toolbar">
+        <h2>{{ page().table }} <span class="count">{{ visibleRows().length }}</span></h2>
+        <input type="search" aria-label="Buscar registros" placeholder="Buscar..." [(ngModel)]="query">
+        @if (section() === 'inventario') {
+          <select aria-label="Filtrar por producto" [(ngModel)]="filter"><option value="">Todos los productos</option>
+            @for (p of products(); track p.id) { <option [value]="p.id">{{ p.nombre }}</option> }
+          </select>
+        }
+        @if (section() === 'pedidos') {
+          <select aria-label="Filtrar por estado" [(ngModel)]="filter"><option value="">Todos los estados</option><option value="Confirmado">Confirmado</option><option value="Cancelado">Cancelado</option></select>
+        }
+      </div>
+      <div class="table-scroll"><table>
+        <caption class="visually-hidden">{{ page().table }}</caption>
+        <thead><tr>@for (column of page().columns; track column) { <th scope="col">{{ column }}</th> }</tr></thead>
+        <tbody>
+          @if (!loading() && !error()) {
+            @for (row of visibleRows(); track row.id) {
+              <tr>@for (cell of row.cells; track $index) { <td>{{ cell }}</td> }
+                <td class="row-actions">
+                  @if (section() !== 'pedidos') { <button type="button" [disabled]="saving()" (click)="edit(row.id)">Editar</button> }
+                  <button type="button" [disabled]="saving() || (section() === 'pedidos' && isCancelled(row.id))" (click)="remove(row.id)">{{ section() === 'pedidos' ? 'Cancelar' : section() === 'productos' ? (isInactive(row.id) ? 'Activar' : 'Desactivar') : 'Eliminar' }}</button>
+                </td>
+              </tr>
+            } @empty { <tr><td class="table-empty" [attr.colspan]="page().columns.length">{{ query || filter ? 'No hay resultados para estos filtros.' : page().empty }}</td></tr> }
+          }
+        </tbody>
+      </table></div>
+    </div>
+  }
+  @if (section() === 'pedidos') { <p class="footnote">Al cancelar un pedido se devuelven sus unidades al inventario.</p> }
+</section>
+
+<dialog #editor aria-labelledby="editor-title" (cancel)="saving() ? $event.preventDefault() : null" (click)="$event.target === editor ? closeDialog() : null">
+  <div class="dialog-heading"><h2 id="editor-title">{{ editing() ? 'Editar registro' : page().formTitle }}</h2><button type="button" [disabled]="saving()" aria-label="Cerrar formulario" (click)="closeDialog()">×</button></div>
+  <form #editorForm="ngForm" (ngSubmit)="save(editorForm)" novalidate>
+    @if (editorSection() === 'productos' || editorSection() === 'marcas' || editorSection() === 'clientes') {
+      <label class="form-field">Nombre<input name="nombre" [(ngModel)]="form.nombre" minlength="2" [maxlength]="editorSection() === 'marcas' ? 80 : 120" required></label>
+    }
+    @if (editorSection() === 'productos') {
+      <label class="form-field">Marca<select name="marcaId" [(ngModel)]="form.marcaId" required><option [ngValue]="0" disabled>Selecciona una marca</option>@for (m of brands(); track m.id) { <option [ngValue]="m.id">{{ m.nombre }}</option> }</select></label>
+      @if (!brands().length) { <p>Registra primero una marca en la sección Marcas.</p> }
+      <label class="form-field">Modelo<input name="modelo" [(ngModel)]="form.modelo" minlength="2" maxlength="100" required></label>
+      <label class="form-field">Color<input name="color" [(ngModel)]="form.color" maxlength="50" required></label>
+      <label class="form-field">Precio (Bs)<input name="precio" type="number" min="0.01" max="99999999" step="0.01" [(ngModel)]="form.precio" required></label>
+      <label class="form-field">URL de imagen<input name="imagenUrl" type="url" maxlength="500" [(ngModel)]="form.imagenUrl"></label>
+    }
+    @if (editorSection() === 'productos' || editorSection() === 'marcas') {
+      <label class="form-field">Descripción<input name="descripcion" [maxlength]="editorSection() === 'marcas' ? 300 : 500" [(ngModel)]="form.descripcion"></label>
+    }
+    @if (editorSection() === 'clientes') {
+      <label class="form-field">Correo<input name="email" type="email" email maxlength="150" [(ngModel)]="form.email" required></label>
+      <label class="form-field">Teléfono<input name="telefono" type="tel" maxlength="30" [(ngModel)]="form.telefono"></label>
+      <label class="form-field">Dirección<input name="direccion" maxlength="250" [(ngModel)]="form.direccion"></label>
+    }
+    @if (editorSection() === 'inventario') {
+      @if (!editing()) {
+        <label class="form-field">Producto<select name="zapatillaId" [(ngModel)]="form.zapatillaId" required><option [ngValue]="0" disabled>Selecciona un producto</option>@for (p of products(); track p.id) { @if (p.activa) { <option [ngValue]="p.id">{{ p.nombre }}</option> } }</select></label>
+        <label class="form-field">Talla<input name="talla" type="number" min="20" max="55" step="1" [(ngModel)]="form.talla" required></label>
+      }
+      <label class="form-field">Stock<input name="stock" type="number" min="0" max="2147483647" step="1" [(ngModel)]="form.stock" required></label>
+      @if (editing()) { <p>Si el stock cambió mientras editabas, cierra y vuelve a cargar la sección antes de ajustar.</p> }
+    }
+    @if (formError()) { <p class="form-error" role="alert">{{ formError() }}</p> }
+    <div class="dialog-actions"><button type="button" [disabled]="saving()" (click)="closeDialog()">Cancelar</button><button type="submit" class="primary-action" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar' }}</button></div>
+  </form>
+</dialog>

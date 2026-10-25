@@ -1,0 +1,17 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/" aria-label="Sneakzone, volver a la tienda"><span class="brand-icon" aria-hidden="true">S<span>✳</span></span><span>SNEAK<span class="brand-accent">ZONE</span></span></a>
+    <p class="workspace">Workspace / Admin</p>
+    <nav aria-label="Administración">
+      @for (link of links; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: link.exact }" ariaCurrentWhenActive="page"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
+      }
+    </nav>
+    <div class="sidebar-bottom"><p><span aria-hidden="true">●</span> Sesión de administrador</p><a routerLink="/">← Ver tienda</a><button type="button" class="logout-button" [disabled]="signingOut()" (click)="logout()">{{ signingOut() ? 'Cerrando sesión…' : 'Cerrar sesión' }}</button></div>
+  </aside>
+  <div class="admin-workspace">
+    <header class="admin-header"><p>Sneakzone <span>/ Panel de control</span></p><span class="session-email">{{ auth.user()?.email }}</span></header>
+    @if (error()) { <p class="api-message" role="alert">{{ error() }}</p> }
+    <main><router-outlet /></main>
+  </div>
+</div>

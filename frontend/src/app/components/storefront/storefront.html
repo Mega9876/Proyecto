@@ -1,0 +1,31 @@
+<div class="announcement"><span aria-hidden="true">●</span> El estilo comienza en tus pies <span class="spark" aria-hidden="true">✳</span> Descubre tu próximo par</div>
+<header class="header">
+  <a class="brand" routerLink="/" aria-label="Sneakzone, inicio">
+    <span class="brand-icon" aria-hidden="true">S<span>✳</span></span>
+    <span>SNEAK<span class="brand-accent">ZONE</span></span>
+  </a>
+  <nav class="navigation" aria-label="Navegación principal">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Inicio</a>
+    <a routerLink="/coleccion" routerLinkActive="active" ariaCurrentWhenActive="page">Colección</a>
+  </nav>
+  <div class="header-actions">
+    <a class="icon-button" routerLink="/coleccion" fragment="buscar" aria-label="Buscar en la colección">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/></svg>
+    </a>
+    <button class="icon-button cart-toggle" type="button" [attr.aria-label]="'Bolsa de compras, ' + cart.count() + ' artículos'" aria-haspopup="dialog" (click)="cart.isOpen.set(true)">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 8h14l-1.4 13H6.4L5 8Z"/><path d="M9 9V5a3 3 0 0 1 6 0v4"/></svg>
+      <span class="bag-count" aria-live="polite" aria-atomic="true">{{ cart.count() }}</span>
+    </button>
+  </div>
+</header>
+@if (cart.confirmation()) { <p class="api-message purchase-confirmation" role="status">{{ cart.confirmation() }}</p> }
+<router-outlet />
+<app-cart />
+<footer class="footer">
+  <div>
+    <a class="brand" routerLink="/" aria-label="Sneakzone, inicio"><span class="brand-icon" aria-hidden="true">S<span>✳</span></span><span>SNEAK<span class="brand-accent">ZONE</span></span></a>
+    <p>Más que zapatillas. Una forma de moverte.</p>
+  </div>
+  <div class="footer-links"><h2>Explora</h2><a routerLink="/coleccion">Catálogo</a><button type="button" class="footer-cart" (click)="cart.isOpen.set(true)">Mi carrito</button></div>
+  <div><h2>Sneakzone</h2><p>Diseñado para los que nunca dejan de avanzar.</p><small>© 2026 SneakZone · Bolivia</small></div>
+</footer>

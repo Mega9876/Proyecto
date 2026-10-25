@@ -1,0 +1,84 @@
+<main>
+  <section class="collection-banner" aria-labelledby="collection-title">
+    <div class="banner-content">
+      <p class="eyebrow"><span aria-hidden="true"></span> Expresa tu estilo</p>
+      <div class="title-row"><h1 id="collection-title">LA <span>COLECCIÓN.</span></h1><p class="signature">Esencia urbana / Sneakzone</p></div>
+      <p class="banner-description">Explora. Elige. Destaca. El siguiente paso comienza aquí.</p>
+    </div>
+  </section>
+
+  <div class="catalog-layout">
+    <aside class="filters" aria-labelledby="filters-title">
+      <div class="filters-heading"><h2 id="filters-title">Filtros</h2><button type="button" (click)="clearFilters()">Limpiar ↗</button></div>
+      <form (ngSubmit)="search()">
+        <div class="filter-group">
+          <label for="buscar">Buscar</label>
+          <input id="buscar" name="query" type="search" [(ngModel)]="query" placeholder="Nombre o modelo...">
+          <button class="search-button" type="submit">Buscar <span aria-hidden="true">⟶</span></button>
+        </div>
+        <div class="filter-group">
+          <label for="marca">Marca</label>
+          <select id="marca" name="brand" [(ngModel)]="brand" (ngModelChange)="search()">
+            <option value="">Todas las marcas</option>
+            @for (item of brands(); track item.id) { <option [value]="item.id">{{ item.nombre }}</option> }
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="precio">Precio máximo</label>
+          <output for="precio">{{ maxPrice === 0 ? 'Sin límite' : 'Bs ' + maxPrice }}</output>
+          <input id="precio" name="maxPrice" type="range" min="0" max="2500" step="50" [(ngModel)]="maxPrice" (ngModelChange)="search()" [attr.aria-valuetext]="maxPrice === 0 ? 'Sin límite' : maxPrice + ' bolivianos'">
+        </div>
+        <label class="stock-option"><input name="inStock" type="checkbox" [(ngModel)]="inStock" (ngModelChange)="search()"> Solo con stock</label>
+      </form>
+      <p class="filter-note">Encuentra tu próxima<br> obsesión</p>
+      <span class="filter-spark" aria-hidden="true">✳</span>
+    </aside>
+
+    <section class="results" aria-label="Resultados de la colección">
+      <div class="results-toolbar">
+        <p><strong>{{ results().length }}</strong> productos</p>
+        <div class="sort"><label for="orden">Ordenar por</label><select id="orden" [(ngModel)]="sort" (ngModelChange)="search()"><option value="featured">Destacados</option><option value="newest">Más recientes</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option></select></div>
+      </div>
+      @if (confirmation()) { <div class="api-message" role="status">{{ confirmation() }} <button type="button" (click)="cart.isOpen.set(true)">Ver carrito ({{ cart.count() }})</button></div> }
+      @if (loading()) { <p role="status">Cargando colección…</p> }
+      @else if (error()) { <div class="api-message" role="alert">{{ error() }} <button type="button" (click)="load()">Reintentar</button></div> }
+      @else if (results().length) {
+        <div class="product-grid">
+          @for (product of results(); track product.id) {
+            <article class="product-card">
+              <img [src]="product.imagenUrl || 'urban-sneaker.svg'" [alt]="product.nombre" (error)="$any($event.target).src = 'urban-sneaker.svg'" loading="lazy">
+              <p>{{ product.marca }} · {{ product.color }}</p><h2>{{ product.nombre }}</h2>
+              <p>{{ product.modelo }}</p><strong>Bs {{ product.precio.toFixed(2) }}</strong>
+              <p>{{ product.stockTotal }} unidades · Tallas: @for (size of product.tallas; track size.inventarioId) { <span>{{ size.talla }}{{ size.stock ? '' : ' (agotada)' }} </span> }</p>
+              <button type="button" [disabled]="product.stockTotal === 0" (click)="chooseSize(product)">{{ product.stockTotal ? 'Añadir al carrito ↗' : 'Sin stock' }}</button>
+            </article>
+          }
+        </div>
+      } @else {
+      <div class="empty-state" role="status" aria-live="polite">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10 15h28l-3 27H13l-3-27Z"/><path d="M18 18V11a6 6 0 0 1 12 0v7"/><path d="m20 28 8 8m0-8-8 8"/></svg>
+        <h2>No hay productos disponibles</h2>
+        <p>{{ searched() || brand || maxPrice || inStock ? 'No encontramos zapatillas con estos filtros. Prueba con otra búsqueda.' : 'Estamos preparando tu próximo par favorito. Vuelve pronto para descubrir la colección.' }}</p>
+        @if (searched() || query || brand || maxPrice || inStock) {
+          <button type="button" (click)="clearFilters()">Limpiar filtros <span aria-hidden="true">↗</span></button>
+        }
+      </div>
+      }
+    </section>
+  </div>
+</main>
+
+<dialog #selectionDialog class="add-to-cart-dialog" aria-labelledby="selection-title">
+  <h2 id="selection-title">Añadir {{ selected()?.nombre }}</h2>
+  <form #selectionForm="ngForm" (ngSubmit)="selectionForm.valid && addToCart()">
+    <label class="form-field">Talla<select name="inventoryId" [(ngModel)]="inventoryId" required>
+      @for (size of selected()?.tallas || []; track size.inventarioId) {
+        @if (size.stock > 0) { <option [ngValue]="size.inventarioId">{{ size.talla }} ({{ size.stock }} disponibles)</option> }
+      }
+    </select></label>
+    <label class="form-field">Cantidad<input name="quantity" type="number" min="1" max="100000" step="1" [(ngModel)]="quantity" required></label>
+    <p>Total: Bs {{ ((selected()?.precio || 0) * quantity).toFixed(2) }}</p>
+    @if (selectionError()) { <p role="alert">{{ selectionError() }}</p> }
+    <div class="dialog-actions"><button type="button" (click)="closeSelection()">Cancelar</button><button type="submit" [disabled]="selectionForm.invalid">Añadir al carrito</button></div>
+  </form>
+</dialog>

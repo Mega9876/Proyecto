@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #141911; background: #efeee6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 24px; margin: 24px 0; }
+.product-card { min-width: 0; padding: 20px; background: #faf9f3; border: 1px solid #d9dccf; border-radius: 12px; }
+.product-card a { text-decoration: none; }
+.product-card img { width: 100%; height: 180px; object-fit: contain; background: #e8ebdf; border-radius: 8px; }
+.product-card h2, .product-card h3 { font-size: 20px; margin: 12px 0; }
+.product-card p { margin: 10px 0; font-size: 14px; line-height: 1.6; }
+.product-card button, .dialog-actions button, .row-actions button, .api-message button { padding: 10px 15px; border: 1px solid #55664a; border-radius: 6px; cursor: pointer; background: #def480; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.api-message { padding: 16px; background: #e3e9d4; border-radius: 8px; margin: 16px 0; }
+dialog { width: min(520px, 94vw); max-height: 90vh; overflow-y: auto; margin: auto; padding: 28px; border: 1px solid #d9dccf; border-radius: 12px; background: #faf9f3; color: #141911; }
+dialog::backdrop { background: #14191188; }
+dialog h2 { font-size: 24px; margin: 0 0 20px; }
+.form-field { display: grid; gap: 8px; margin: 14px 0; font-size: 14px; }
+.form-field input, .form-field select { width: 100%; padding: 10px; border: 1px solid #b5bca7; border-radius: 6px; background: white; color: #141911; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+.row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+table tbody td { padding: 16px; border-bottom: 1px solid #e1e4d9; font-size: 14px; }
+.summary-stats { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
