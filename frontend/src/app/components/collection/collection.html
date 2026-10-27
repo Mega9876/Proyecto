@@ -39,7 +39,6 @@
         <p><strong>{{ results().length }}</strong> productos</p>
         <div class="sort"><label for="orden">Ordenar por</label><select id="orden" [(ngModel)]="sort" (ngModelChange)="search()"><option value="featured">Destacados</option><option value="newest">Más recientes</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option></select></div>
       </div>
-      @if (confirmation()) { <div class="api-message" role="status">{{ confirmation() }} <button type="button" (click)="cart.isOpen.set(true)">Ver carrito ({{ cart.count() }})</button></div> }
       @if (loading()) { <p role="status">Cargando colección…</p> }
       @else if (error()) { <div class="api-message" role="alert">{{ error() }} <button type="button" (click)="load()">Reintentar</button></div> }
       @else if (results().length) {

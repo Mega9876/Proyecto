@@ -15,6 +15,11 @@ h2 span { color: #89a929; }
 .item-controls { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
 .item-controls button { width: 28px; height: 28px; border: 1px solid #c8d0bc; background: white; border-radius: 4px; }
 .item-quantity { min-width: 18px; text-align: center; font-size: 13px; }
+.item-info .stock-available { margin-top: 12px; }
+.stock-available strong { display: block; margin-top: 4px; color: #2d702c; font-size: 14px; }
+.stock-available.stock-insufficient strong { color: #9b392a; }
+.item-info .stock-limit { margin-top: 10px; color: #6d6029; }
+.item-info .stock-warning { margin-top: 10px; padding: 10px; background: #fae9e2; border-radius: 6px; }
 .item-controls .remove-item { width: auto; border: 0; background: transparent; font-size: 11px; text-decoration: underline; color: #7c4e40; }
 .cart-total { display: flex; justify-content: space-between; align-items: center; font-size: 20px; padding: 24px 0; border-top: 1px solid #dfe5d8; }
 .cart-total strong { font-size: 26px; }

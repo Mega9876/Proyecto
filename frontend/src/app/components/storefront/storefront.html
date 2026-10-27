@@ -19,8 +19,9 @@
   </div>
 </header>
 @if (cart.confirmation()) { <p class="api-message purchase-confirmation" role="status">{{ cart.confirmation() }}</p> }
-<router-outlet />
+<router-outlet #pageOutlet="outlet" />
 <app-cart />
+@if (!pageOutlet.isActivated || !pageOutlet.activatedRouteData['hideFooter']) {
 <footer class="footer">
   <div>
     <a class="brand" routerLink="/" aria-label="Sneakzone, inicio"><span class="brand-icon" aria-hidden="true">S<span>✳</span></span><span>SNEAK<span class="brand-accent">ZONE</span></span></a>
@@ -29,3 +30,4 @@
   <div class="footer-links"><h2>Explora</h2><a routerLink="/coleccion">Catálogo</a><button type="button" class="footer-cart" (click)="cart.isOpen.set(true)">Mi carrito</button></div>
   <div><h2>Sneakzone</h2><p>Diseñado para los que nunca dejan de avanzar.</p><small>© 2026 SneakZone · Bolivia</small></div>
 </footer>
+}

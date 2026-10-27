@@ -25,7 +25,7 @@ export const routes: Routes = [
   {
     path: '', component: Storefront,
     children: [
-      { path: '', component: Home, title: 'Sneakzone — Move your world' },
+      { path: '', component: Home, data: { hideFooter: true }, title: 'Sneakzone — Move your world' },
       { path: 'coleccion', component: Collection, title: 'Colección — Sneakzone' }
     ]
   },

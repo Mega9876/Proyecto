@@ -7,14 +7,16 @@
         <article class="cart-item">
           <img [src]="item.imagenUrl || 'urban-sneaker.svg'" [alt]="item.nombre" (error)="$any($event.target).src = 'urban-sneaker.svg'">
           <div class="item-info"><p>{{ item.marca }}</p><h3>{{ item.nombre }}</h3><p>Talla {{ item.talla }} · Bs {{ item.precio.toFixed(2) }}</p>
-            @if (!item.stock) { <p class="stock-warning">Ya no está disponible</p> }
-            @else if (item.cantidad > item.stock) { <p class="stock-warning">Solo quedan {{ item.stock }} unidades</p> }
+            <p class="stock-available" [class.stock-insufficient]="item.cantidad > item.stock">Stock disponible<strong>{{ item.stock }} {{ item.stock === 1 ? 'unidad' : 'unidades' }}</strong></p>
             <div class="item-controls">
               <button type="button" [attr.aria-label]="'Quitar una unidad de ' + item.nombre + ', talla ' + item.talla" [disabled]="saving() || item.cantidad <= 1 || !item.stock" (click)="cart.quantity(item.inventarioId, Math.min(item.cantidad - 1, item.stock))">−</button>
               <span class="item-quantity">{{ item.cantidad }}</span>
               <button type="button" [attr.aria-label]="'Añadir una unidad de ' + item.nombre + ', talla ' + item.talla" [disabled]="saving() || item.cantidad >= item.stock" (click)="cart.quantity(item.inventarioId, item.cantidad + 1)">+</button>
               <button type="button" class="remove-item" [disabled]="saving()" (click)="cart.remove(item.inventarioId)">Eliminar</button>
             </div>
+            @if (!item.stock) { <p class="stock-warning" role="status">Ya no está disponible</p> }
+            @else if (item.cantidad > item.stock) { <p class="stock-warning" role="status"><strong>Stock insuficiente.</strong> Solo hay {{ item.stock }} {{ item.stock === 1 ? 'unidad disponible' : 'unidades disponibles' }} de esta talla.</p> }
+            @else if (item.cantidad === item.stock) { <p class="stock-limit" role="status">Has alcanzado el máximo disponible de esta talla.</p> }
           </div>
           <strong class="item-subtotal">Bs {{ (item.precio * item.cantidad).toFixed(2) }}</strong>
         </article>

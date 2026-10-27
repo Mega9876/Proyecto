@@ -41,7 +41,6 @@ export class Collection {
   protected readonly selectionDialog = viewChild<ElementRef<HTMLDialogElement>>('selectionDialog');
   protected readonly selected = signal<Producto | null>(null);
   protected readonly selectionError = signal('');
-  protected readonly confirmation = signal('');
   protected inventoryId = 0;
   protected quantity = 1;
 
@@ -90,7 +89,6 @@ export class Collection {
     const error = this.cart.add(product, this.inventoryId, this.quantity);
     this.selectionError.set(error);
     if (error) return;
-    this.confirmation.set(`${this.quantity} ${this.quantity === 1 ? 'par añadido' : 'pares añadidos'} al carrito: ${product.nombre}.`);
     this.closeSelection();
   }
 }

@@ -71,6 +71,9 @@ describe('App', () => {
     expect(compiled.querySelector('nav')?.textContent).toContain('Colección');
     expect(compiled.querySelector('.primary-link')?.getAttribute('href')).toBe('/coleccion');
     expect(compiled.querySelector('a[href^="/administracion"]')).toBeNull();
+    expect(compiled.querySelector('.style-strip')).not.toBeNull();
+    expect(compiled.querySelector('.home-content')).toBeNull();
+    expect(compiled.querySelector('.footer')).toBeNull();
   });
 
   it('should navigate through administration and return to the storefront', async () => {
@@ -99,7 +102,7 @@ describe('App', () => {
     await fixture.whenStable();
     expect(router.url).toBe('/');
     expect(compiled.querySelector('.sidebar')).toBeNull();
-    expect(compiled.querySelector('.footer')).not.toBeNull();
+    expect(compiled.querySelector('.footer')).toBeNull();
   });
 
   it('should open the collection and reset its filters', async () => {
@@ -110,6 +113,7 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toBe('LA COLECCIÓN.');
     expect(compiled.querySelector('nav .active')?.textContent).toBe('Colección');
+    expect(compiled.querySelector('.footer')).not.toBeNull();
     expect(compiled.querySelector('.empty-state')?.textContent).toContain('No hay productos disponibles');
 
     const input = compiled.querySelector<HTMLInputElement>('#buscar')!;
